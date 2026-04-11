@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">RentGrid</a>
+    <div class="d-flex gap-2 align-items-center">
+      @if (currentUser()) {
+        <span class="me-3 text-muted">Bejelentkezve: {{ displayName() }}</span>
+        <a class="btn btn-outline-secondary" routerLink="/my-bookings">Saját foglalások</a>
+        @if (isAdmin()) {
+          <a class="btn btn-outline-info" routerLink="/dashboard">Dashboard</a>
+        }
+        <button class="btn btn-danger" type="button" (click)="logout()">Kijelentkezés</button>
+      } @else {
+        <a class="btn btn-outline-primary" routerLink="/login">Bejelentkezés</a>
+        <a class="btn btn-primary" routerLink="/register">Regisztráció</a>
+      }
+    </div>
+  </div>
+</nav>
+
+<main class="container py-5">
+  <router-outlet></router-outlet>
+</main>

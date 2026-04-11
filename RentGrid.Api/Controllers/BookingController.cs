@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,22 +82,14 @@ public class BookingController : ControllerBase
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate,
                 TotalPrice = totalPrice,
-                Status = "Pending"
+                Status = "Pending",
+                BookingExtras = extraServices.Select(es => new BookingExtra
+                {
+                    ExtraServiceId = es.Id
+                }).ToList()
             };
 
             await _dbContext.Bookings.AddAsync(booking);
-
-            foreach (var extraService in extraServices)
-            {
-                var bookingExtra = new BookingExtra
-                {
-                    Booking = booking,
-                    ExtraServiceId = extraService.Id
-                };
-
-                await _dbContext.BookingExtras.AddAsync(bookingExtra);
-            }
-
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
 
@@ -107,6 +100,104 @@ public class BookingController : ControllerBase
             await transaction.RollbackAsync();
             return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
         }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBooking(int id)
+    {
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                          ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized("A felhasználó azonosítása nem sikerült.");
+        }
+
+        var booking = await _dbContext.Bookings.FindAsync(id);
+        if (booking is null)
+        {
+            return NotFound("A foglalás nem található.");
+        }
+
+        if (booking.UserId != userId)
+        {
+            return Forbid("Nincs jogosultsága a foglalás törléséhez.");
+        }
+
+        _dbContext.Bookings.Remove(booking);
+        await _dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id}/cancel")]
+    public async Task<IActionResult> CancelBooking(int id)
+    {
+        var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                          ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+        {
+            return Unauthorized("A felhasználó azonosítása nem sikerült.");
+        }
+
+        var booking = await _dbContext.Bookings.FindAsync(id);
+        if (booking is null)
+        {
+            return NotFound("A foglalás nem található.");
+        }
+
+        if (booking.UserId != userId)
+        {
+            return Forbid("Nincs jogosultsága a foglalás módosításához.");
+        }
+
+        if (booking.Status == "Cancelled")
+        {
+            return BadRequest("A foglalás már törölve van.");
+        }
+
+        booking.Status = "Cancelled";
+        await _dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("admin")]
+    public async Task<ActionResult<IEnumerable<AdminBookingDto>>> GetAdminBookings()
+    {
+        var bookings = await _dbContext.Bookings
+            .AsNoTracking()
+            .Include(b => b.Vehicle)
+            .Include(b => b.User)
+            .Include(b => b.BookingExtras)
+                .ThenInclude(be => be.ExtraService)
+            .OrderByDescending(b => b.StartDate)
+            .Select(b => new AdminBookingDto
+            {
+                Id = b.Id,
+                VehicleId = b.VehicleId,
+                VehicleBrand = b.Vehicle!.Brand,
+                VehicleModel = b.Vehicle.Model,
+                VehicleDailyPrice = b.Vehicle.DailyPrice,
+                VehicleImageFileId = b.Vehicle.MongoImageId,
+                StartDate = b.StartDate,
+                EndDate = b.EndDate,
+                TotalPrice = b.TotalPrice,
+                Status = b.Status,
+                UserEmail = b.User!.Email,
+                UserFullName = b.User.FullName,
+                Extras = b.BookingExtras.Select(be => new BookingExtraDto
+                {
+                    Id = be.ExtraServiceId,
+                    Name = be.ExtraService!.Name,
+                    Price = be.ExtraService.Price
+                }).ToList()
+            })
+            .ToListAsync();
+
+        return Ok(bookings);
     }
 
     [HttpGet("my-bookings")]
