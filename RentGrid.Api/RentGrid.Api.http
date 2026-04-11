@@ -1,0 +1,6 @@
+@RentGrid.Api_HostAddress = http://localhost:5172
+
+GET {{RentGrid.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

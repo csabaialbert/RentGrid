@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FCB8359A-7622-08C2-E100-322B010BBAA9}|RentGrid.Api\\RentGrid.Api.csproj|c:\\users\\csaba\\source\\repos\\rentgrid\\rentgrid.api\\rentgrid.api.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{FCB8359A-7622-08C2-E100-322B010BBAA9}|RentGrid.Api\\RentGrid.Api.csproj|solutionrelative:rentgrid.api\\rentgrid.api.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RentGrid.Api",
+              "DocumentMoniker": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api\\RentGrid.Api.csproj",
+              "RelativeDocumentMoniker": "RentGrid.Api\\RentGrid.Api.csproj",
+              "ToolTip": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api\\RentGrid.Api.csproj",
+              "RelativeToolTip": "RentGrid.Api\\RentGrid.Api.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-04-11T12:23:32.372Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
