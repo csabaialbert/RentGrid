@@ -438,3 +438,5 @@ C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\Debug\net10.0\refint\RentG
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\Debug\net10.0\RentGrid.Api.pdb
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\Debug\net10.0\RentGrid.Api.genruntimeconfig.cache
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\Debug\net10.0\ref\RentGrid.Api.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\Debug\net10.0\RentGrid.Api.sourcelink.json

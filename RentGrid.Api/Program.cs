@@ -1,16 +1,34 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using RentGrid.Api.Data;
 using RentGrid.Api.Services;
-using MongoDB.Driver;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy("AllowAngular",
+            policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+    });
+builder.Services.AddControllers();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IImageService, GridFSService>();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options 
     => options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddSingleton<IMongoClient>(sp =>
     new MongoClient(builder.Configuration.GetConnectionString("MongoConnection")));
 builder.Services.AddScoped(sp =>
@@ -18,6 +36,24 @@ builder.Services.AddScoped(sp =>
     var client = sp.GetRequiredService<IMongoClient>();
     return client.GetDatabase("RentGridDb");
 });
+
+var jwtConfig = builder.Configuration.GetSection("Jwt");
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtConfig["Issuer"],
+            ValidAudience = jwtConfig["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig["Key"]!))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +63,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAngular");
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 var summaries = new[]
 {

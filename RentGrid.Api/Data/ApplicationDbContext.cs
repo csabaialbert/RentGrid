@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using RentGrid.Api.Models;
 
@@ -35,6 +36,13 @@ public class ApplicationDbContext : DbContext
             // MongoDB GridFS referencia
             entity.Property(v => v.MongoImageId)
                   .IsRequired(false);
+
+            entity.HasData(
+                new Vehicle { Id = 1, Brand = "Toyota", Model = "Corolla", DailyPrice = 17500m, IsAvailable = true, MongoImageId = null },
+                new Vehicle { Id = 2, Brand = "Ford", Model = "Focus", DailyPrice = 16500m, IsAvailable = true, MongoImageId = null },
+                new Vehicle { Id = 3, Brand = "BMW", Model = "320i", DailyPrice = 32000m, IsAvailable = true, MongoImageId = null },
+                new Vehicle { Id = 4, Brand = "Škoda", Model = "Octavia", DailyPrice = 18500m, IsAvailable = true, MongoImageId = null }
+            );
         });
 
         // --- BOOKING KONFIGURÁCIÓ ---
@@ -80,6 +88,33 @@ public class ApplicationDbContext : DbContext
         {
             entity.Property(es => es.Price)
                   .HasPrecision(18, 2);
+
+            entity.HasData(
+                new ExtraService { Id = 1, Name = "GPS", Price = 2000m },
+                new ExtraService { Id = 2, Name = "Gyerekülés", Price = 1500m },
+                new ExtraService { Id = 3, Name = "Extra biztosítás", Price = 5000m }
+            );
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(u => u.Id);
+            entity.Property(u => u.FullName).IsRequired();
+            entity.Property(u => u.Email).IsRequired();
+            entity.Property(u => u.PasswordHash).IsRequired();
+            entity.Property(u => u.Role).IsRequired();
+
+            entity.HasData(
+                new User
+                {
+                    Id = 1,
+                    FullName = "Admin User",
+                    Email = "admin@rentgrid.local",
+                    PasswordHash = "$2a$12$OMuczbfgm9D4Ix.5EhxeKeDmqYFbW464rY2k9TT2yHoYeMiy8K/ja",
+                    Role = "Admin",
+                    CreatedAt = new DateTime(2026, 4, 11, 0, 0, 0, DateTimeKind.Utc)
+                }
+            );
         });
     }
 }

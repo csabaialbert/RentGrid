@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GJKnwzK/cgs=",
+  "dgSpecHash": "Og7jf3Hj4Zg=",
   "success": true,
   "projectFilePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api\\RentGrid.Api.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\csaba\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.0\\microsoft.aspnetcore.authentication.jwtbearer.10.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0\\microsoft.aspnetcore.openapi.10.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.4\\microsoft.bcl.cryptography.9.0.4.nupkg.sha512",
@@ -37,8 +38,8 @@
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.17.0\\microsoft.identitymodel.abstractions.8.17.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.17.0\\microsoft.identitymodel.jsonwebtokens.8.17.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.logging\\8.17.0\\microsoft.identitymodel.logging.8.17.0.nupkg.sha512",
-    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.protocols\\7.7.1\\microsoft.identitymodel.protocols.7.7.1.nupkg.sha512",
-    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\7.7.1\\microsoft.identitymodel.protocols.openidconnect.7.7.1.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.protocols\\8.0.1\\microsoft.identitymodel.protocols.8.0.1.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\8.0.1\\microsoft.identitymodel.protocols.openidconnect.8.0.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.17.0\\microsoft.identitymodel.tokens.8.17.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.net.stringtools\\17.14.28\\microsoft.net.stringtools.17.14.28.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512",
