@@ -21,6 +21,7 @@ export interface CurrentUser {
   token: string;
   email: string;
   role: string;
+  id: number;
 }
 
 @Injectable({
@@ -38,6 +39,10 @@ export class AuthService {
 
   get token(): string | null {
     return this.currentUserSubject.value?.token ?? null;
+  }
+
+  get currentUserId(): number | null {
+    return this.currentUserSubject.value?.id ?? null;
   }
 
   private getStoredToken(): string | null {
@@ -61,11 +66,14 @@ export class AuthService {
 
       const email = (parsed['email'] ?? parsed['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? '') as string;
       const role = (parsed['role'] ?? parsed['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ?? '') as string;
+      const sub = (parsed['sub'] ?? parsed['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? '') as string;
+      const id = parseInt(sub, 10);
 
       return {
         token,
         email: email ?? '',
-        role: role ?? ''
+        role: role ?? '',
+        id: isNaN(id) ? 0 : id
       };
     } catch {
       return null;

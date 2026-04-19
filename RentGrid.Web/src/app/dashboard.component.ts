@@ -28,6 +28,9 @@ import { Console } from 'console';
                   <a class="btn btn-outline-info" routerLink="/extras-admin">
                     <i class="bi bi-journal-plus"></i> Extrák kezelése
                   </a>
+                  <a class="btn btn-outline-warning" routerLink="/user-admin">
+                    <i class="bi bi-people"></i> Felhasználók kezelése
+                  </a>
                   <a class="btn btn-outline-secondary" routerLink="/">Vissza a kezdőlapra</a>
                 </div>
               </div>

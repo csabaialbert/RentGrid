@@ -1,22 +1,35 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/">RentGrid</a>
-    <div class="d-flex gap-2 align-items-center">
+<nav class="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/90 backdrop-blur-md">
+  <div class="container mx-auto flex items-center justify-between px-4 py-3">
+    
+    <a class="flex items-center gap-2 no-underline" routerLink="/">
+      <img src="/rentGridLogo.png" alt="RentGrid Logo" class="h-10 w-auto object-contain">
+      
+    </a>
+
+    <div class="flex items-center gap-4">
       @if (currentUser()) {
-        <span class="me-3 text-muted">Bejelentkezve: {{ displayName() }}</span>
-        <a class="btn btn-outline-secondary" routerLink="/my-bookings">Saját foglalások</a>
+        <span class="hidden text-sm text-gray-500 md:inline">
+          Bejelentkezve: <span class="font-medium text-gray-900">{{ displayName() }}</span>
+        </span>
+        <a class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50" routerLink="/my-bookings">
+          Saját foglalások
+        </a>
         @if (isAdmin()) {
-          <a class="btn btn-outline-info" routerLink="/dashboard">Dashboard</a>
+          <a class="rounded-lg border border-cyan-500 px-3 py-1.5 text-sm font-medium text-cyan-600 hover:bg-cyan-50" routerLink="/dashboard">
+            Dashboard
+          </a>
         }
-        <button class="btn btn-danger" type="button" (click)="logout()">Kijelentkezés</button>
+        <button class="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700" type="button" (click)="logout()">
+          Kijelentkezés
+        </button>
       } @else {
-        <a class="btn btn-outline-primary" routerLink="/login">Bejelentkezés</a>
-        <a class="btn btn-primary" routerLink="/register">Regisztráció</a>
+        <a class="text-sm font-medium text-blue-600 hover:text-blue-700" routerLink="/login">Bejelentkezés</a>
+        <a class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700" routerLink="/register">Regisztráció</a>
       }
     </div>
   </div>
 </nav>
 
-<main class="container py-5">
+<main class="container mx-auto my-8 min-h-[80vh] rounded-2xl bg-white/80 p-6 shadow-xl backdrop-blur-sm">
   <router-outlet></router-outlet>
 </main>

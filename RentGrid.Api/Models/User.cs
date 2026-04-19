@@ -13,6 +13,7 @@ namespace RentGrid.Api.Models
         public required string PasswordHash { get; set; }
         public string Role { get; set; } = "Customer"; // Admin vagy customer
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public bool IsActive { get; set; } = true;
 
         // Nav: Egy felhasználónak sok foglalása lehet
         public List<Booking> Bookings { get; set; } = new();

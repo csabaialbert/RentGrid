@@ -112,7 +112,7 @@ import { VehicleService, Vehicle } from './vehicle.service';
               }
 
               <div class="row gy-3">
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <strong>Jármű:</strong>
                   <p class="mb-1">{{ selectedVehicle()?.brand }} {{ selectedVehicle()?.model }}</p>
                   <p class="mb-1">Napi ár: {{ selectedVehicle()?.dailyPrice }} Ft</p>

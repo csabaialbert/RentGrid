@@ -38,7 +38,8 @@ public class UserController : ControllerBase
                 Id = u.Id,
                 Name = u.FullName,
                 Email = u.Email,
-                Role = u.Role
+                Role = u.Role,
+                IsActive = u.IsActive
             })
             .SingleOrDefaultAsync();
 
@@ -61,10 +62,35 @@ public class UserController : ControllerBase
                 Id = u.Id,
                 Name = u.FullName,
                 Email = u.Email,
-                Role = u.Role
+                Role = u.Role,
+                IsActive = u.IsActive
             })
             .ToListAsync();
 
         return Ok(users);
+    }
+
+    [HttpPut("{id}/toggle-active")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<UserDto>> ToggleUserActive(int id)
+    {
+        var user = await _dbContext.Users.FindAsync(id);
+        
+        if (user is null)
+        {
+            return NotFound("A felhasználó nem található.");
+        }
+
+        user.IsActive = !user.IsActive;
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(new UserDto
+        {
+            Id = user.Id,
+            Name = user.FullName,
+            Email = user.Email,
+            Role = user.Role,
+            IsActive = user.IsActive
+        });
     }
 }
