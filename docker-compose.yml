@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: ./RentGrid.Api
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_ENVIRONMENT=Development # Fejlesztéshez érdemesebb ez
+      - DisableHttpsRedirection=true
+      # SQL Server a host gépen (Windows)
+      - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1433;Database=RentGridDb;User Id=rentgrid;Password=Passw0rd01+;TrustServerCertificate=true
+      # MongoDB a host gépen (Windows)
+      - ConnectionStrings__MongoConnection=mongodb://host.docker.internal:27017
+    # Nincs depends_on, mert a külső adatbázisokat nem a Docker kezeli
+
+  web:
+    build:
+      context: ./RentGrid.Web
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    environment:
+      - PORT=80
+      - API_URL=http://api:8080
+    depends_on:
+      - api

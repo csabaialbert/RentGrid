@@ -36,7 +36,7 @@ import { VehicleService, Vehicle } from './vehicle.service';
               <div class="card h-100 shadow-sm">
                 @if (vehicle.imageFileIds && vehicle.imageFileIds.length > 0) {
                   <img
-                    [src]="'http://localhost:5001/api/vehicle/image/' + vehicle.imageFileIds[0]"
+                    [src]="'/api/vehicle/image/' + vehicle.imageFileIds[0]"
                     class="card-img-top"
                     alt="{{ vehicle.brand }} {{ vehicle.model }}"
                   />

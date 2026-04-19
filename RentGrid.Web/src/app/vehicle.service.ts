@@ -30,7 +30,7 @@ export interface UpdateVehicleAvailabilityRequest {
 })
 export class VehicleService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5001/api/vehicle';
+  private readonly apiUrl = '/api/vehicle';
 
   getAllVehicles(minPrice?: number, maxPrice?: number, isAvailable?: boolean): Observable<Vehicle[]> {
     let params: any = {};

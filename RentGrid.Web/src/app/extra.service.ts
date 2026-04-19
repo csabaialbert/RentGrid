@@ -14,7 +14,7 @@ export interface ExtraOption {
 })
 export class ExtraService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5001/api/extras';
+  private readonly apiUrl = '/api/extras';
 
   getExtras(includeInactive = false): Observable<ExtraOption[]> {
     const params: Record<string, string> = {};

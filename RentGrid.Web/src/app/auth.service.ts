@@ -28,7 +28,7 @@ export interface CurrentUser {
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
-  private readonly authEndpoint = 'http://localhost:5001/api/auth';
+  private readonly authEndpoint = '/api/auth';
   private readonly tokenKey = 'rentgrid_token';
   private readonly currentUserSubject = new BehaviorSubject<CurrentUser | null>(
     this.getStoredUser()

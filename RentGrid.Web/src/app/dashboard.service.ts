@@ -43,17 +43,17 @@ export interface AdminBooking {
 })
 export class DashboardService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5001/api/dashboard';
+  private readonly apiUrl = '/api/dashboard';
 
   getStats(): Observable<DashboardStats> {
     return this.http.get<DashboardStats>(`${this.apiUrl}/stats`);
   }
 
   getAdminBookings(): Observable<AdminBooking[]> {
-    return this.http.get<AdminBooking[]>('http://localhost:5001/api/booking/admin');
+    return this.http.get<AdminBooking[]>('/api/booking/admin');
   }
 
   updateBookingStatus(bookingId: number, status: string): Observable<void> {
-    return this.http.patch<void>(`http://localhost:5001/api/booking/${bookingId}/status`, { status });
+    return this.http.patch<void>(`/api/booking/${bookingId}/status`, { status });
   }
 }

@@ -43,7 +43,7 @@ export interface MyBooking {
 })
 export class BookingService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:5001/api/booking';
+  private readonly apiUrl = '/api/booking';
 
   createBooking(payload: CreateBookingRequest): Observable<BookingCreatedResponse> {
     return this.http.post<BookingCreatedResponse>(this.apiUrl, payload);
