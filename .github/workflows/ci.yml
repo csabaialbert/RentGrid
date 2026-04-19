@@ -1,0 +1,76 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  API-Build-and-Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore ./RentGrid.Api/RentGrid.Api.csproj
+
+      - name: Build API
+        run: dotnet build ./RentGrid.Api/RentGrid.Api.csproj --configuration Release --no-restore
+
+      - name: Run API Tests
+        run: dotnet test ./RentGrid.Api.Tests/RentGrid.Api.Tests.csproj --configuration Release --no-build --verbosity normal
+
+  Web-Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.12.0'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: RentGrid.Web/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('RentGrid.Web/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./RentGrid.Web
+
+      - name: Build Angular application
+        run: npm run build
+        working-directory: ./RentGrid.Web
+
+  Docker-Validation:
+    needs: [API-Build-and-Test, Web-Build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker-compose build
