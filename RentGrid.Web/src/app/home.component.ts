@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, PLATFORM_ID, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from './auth.service';
@@ -33,9 +34,9 @@ import { VehicleService, Vehicle } from './vehicle.service';
           @for (vehicle of vehicles(); track vehicle.id) {
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
               <div class="card h-100 shadow-sm">
-                @if (vehicle.mongoImageId) {
+                @if (vehicle.imageFileIds && vehicle.imageFileIds.length > 0) {
                   <img
-                    [src]="'http://localhost:5001/api/vehicle/image/' + vehicle.mongoImageId"
+                    [src]="'http://localhost:5001/api/vehicle/image/' + vehicle.imageFileIds[0]"
                     class="card-img-top"
                     alt="{{ vehicle.brand }} {{ vehicle.model }}"
                   />
@@ -78,6 +79,38 @@ import { VehicleService, Vehicle } from './vehicle.service';
               <button type="button" class="btn-close" aria-label="Bezárás" (click)="closeModal()"></button>
             </div>
             <div class="modal-body">
+              @if (selectedVehicleImageIds().length > 0) {
+                <div class="mb-4">
+                  <img
+                    [src]="selectedGalleryImageUrl()"
+                    class="img-fluid rounded w-100 mb-3"
+                    alt="{{ selectedVehicle()?.brand }} {{ selectedVehicle()?.model }}"
+                  />
+                  <div class="d-flex flex-wrap gap-2">
+                    @for (imageId of selectedVehicleImageIds(); track imageId) {
+                      <button
+                        type="button"
+                        class="btn p-0 border rounded overflow-hidden"
+                        [class.border-primary]="selectedGalleryImageId() === imageId"
+                        (click)="changeGalleryImage(imageId)"
+                        style="width: 100px; height: 70px;"
+                      >
+                        <img
+                          [src]="vehicleService.getVehicleImage(imageId)"
+                          class="h-100 w-100"
+                          style="object-fit: cover;"
+                          alt="Kép"
+                        />
+                      </button>
+                    }
+                  </div>
+                </div>
+              } @else {
+                <div class="mb-4 bg-light border rounded-3 p-4 text-center">
+                  <p class="mb-0">Nincs kép ehhez a járműhöz.</p>
+                </div>
+              }
+
               <div class="row gy-3">
                 <div class="col-md-6">
                   <strong>Jármű:</strong>
@@ -86,11 +119,21 @@ import { VehicleService, Vehicle } from './vehicle.service';
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Kezdet</label>
-                  <input type="date" class="form-control" [(ngModel)]="bookingStart" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    [ngModel]="bookingStart()"
+                    (ngModelChange)="bookingStart.set($event)"
+                  />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Vége</label>
-                  <input type="date" class="form-control" [(ngModel)]="bookingEnd" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    [ngModel]="bookingEnd()"
+                    (ngModelChange)="bookingEnd.set($event)"
+                  />
                 </div>
               </div>
 
@@ -133,7 +176,7 @@ import { VehicleService, Vehicle } from './vehicle.service';
   `
 })
 export class HomeComponent implements OnInit {
-  private readonly vehicleService = inject(VehicleService);
+  protected readonly vehicleService = inject(VehicleService);
   private readonly authService = inject(AuthService);
   private readonly extraService = inject(ExtraService);
   private readonly bookingService = inject(BookingService);
@@ -146,19 +189,25 @@ export class HomeComponent implements OnInit {
   protected readonly error = signal<string | null>(null);
   protected readonly isLoggedIn = signal(false);
   protected readonly selectedVehicle = signal<Vehicle | null>(null);
+  protected readonly selectedGalleryImageId = signal<string | null>(null);
+  protected readonly selectedVehicleImageIds = computed(() => this.selectedVehicle()?.imageFileIds ?? []);
+  protected readonly selectedGalleryImageUrl = computed(() => {
+    const imageId = this.selectedGalleryImageId() || this.selectedVehicleImageIds()[0];
+    return imageId ? this.vehicleService.getVehicleImage(imageId) : '';
+  });
 
-  protected bookingStart = '';
-  protected bookingEnd = '';
+  protected readonly bookingStart = signal('');
+  protected readonly bookingEnd = signal('');
   protected readonly selectedExtrasMap = signal<Record<number, boolean>>({});
 
   protected readonly bookingTotal = computed(() => {
     const vehicle = this.selectedVehicle();
-    if (!vehicle || !this.bookingStart || !this.bookingEnd) {
+    if (!vehicle || !this.bookingStart() || !this.bookingEnd()) {
       return 0;
     }
 
-    const start = new Date(this.bookingStart);
-    const end = new Date(this.bookingEnd);
+    const start = new Date(this.bookingStart());
+    const end = new Date(this.bookingEnd());
     if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
       return 0;
     }
@@ -207,13 +256,19 @@ export class HomeComponent implements OnInit {
     }
 
     this.selectedVehicle.set(vehicle);
-    this.bookingStart = '';
-    this.bookingEnd = '';
+    this.selectedGalleryImageId.set(vehicle.imageFileIds?.[0] || null);
+    this.bookingStart.set('');
+    this.bookingEnd.set('');
     this.selectedExtrasMap.set({});
   }
 
   protected closeModal(): void {
     this.selectedVehicle.set(null);
+    this.selectedGalleryImageId.set(null);
+  }
+
+  protected changeGalleryImage(imageId: string): void {
+    this.selectedGalleryImageId.set(imageId);
   }
 
   protected toggleExtra(extraId: number, checked: boolean): void {
@@ -229,13 +284,13 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    if (!this.bookingStart || !this.bookingEnd) {
+    if (!this.bookingStart() || !this.bookingEnd()) {
       window.alert('Kérjük, adja meg a foglalás kezdő és végdátumát.');
       return;
     }
 
-    const start = new Date(this.bookingStart);
-    const end = new Date(this.bookingEnd);
+    const start = new Date(this.bookingStart());
+    const end = new Date(this.bookingEnd());
     if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) {
       window.alert('A foglalási időszaknak érvényesnek kell lennie, és a végdátumnak később kell lennie.');
       return;
@@ -247,8 +302,8 @@ export class HomeComponent implements OnInit {
 
     const bookingPayload: CreateBookingRequest = {
       vehicleId: vehicle.id,
-      startDate: this.bookingStart,
-      endDate: this.bookingEnd,
+      startDate: this.bookingStart(),
+      endDate: this.bookingEnd(),
       extraServiceIds: selectedExtraIds
     };
 
@@ -257,9 +312,29 @@ export class HomeComponent implements OnInit {
         this.closeModal();
         window.alert('Foglalás sikeresen létrehozva.');
       },
-      error: () => {
-        window.alert('Hiba történt a foglalás létrehozásakor.');
+      error: (err) => {
+        window.alert(this.getBookingErrorMessage(err));
       }
     });
+  }
+
+  private getBookingErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (typeof error.error === 'string' && error.error.trim()) {
+        return error.error;
+      }
+
+      if (typeof error.error === 'object' && error.error !== null) {
+        return (
+          (error.error as { detail?: string; title?: string }).detail ||
+          (error.error as { detail?: string; title?: string }).title ||
+          error.message
+        );
+      }
+
+      return error.message || 'Hiba történt a foglalás létrehozásakor.';
+    }
+
+    return 'Hiba történt a foglalás létrehozásakor.';
   }
 }

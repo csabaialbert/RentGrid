@@ -33,15 +33,23 @@ public class ApplicationDbContext : DbContext
             entity.Property(v => v.DailyPrice)
                   .HasPrecision(18, 2);
 
-            // MongoDB GridFS referencia
-            entity.Property(v => v.MongoImageId)
+            // MongoDB GridFS referenciák (JSON-ként tárolva)
+            var property = entity.Property(v => v.MongoImageIds)
+                  .HasConversion(
+                      v => string.Join(',', v),
+                      v => string.IsNullOrEmpty(v) ? new List<string>() : v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
+                  )
                   .IsRequired(false);
+            property.Metadata.SetValueComparer(new Microsoft.EntityFrameworkCore.ChangeTracking.ValueComparer<List<string>>(
+                (c1, c2) => c1 != null && c2 != null && c1.SequenceEqual(c2),
+                c => c == null ? 0 : c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c == null ? new List<string>() : new List<string>(c)));
 
             entity.HasData(
-                new Vehicle { Id = 1, Brand = "Toyota", Model = "Corolla", DailyPrice = 17500m, IsAvailable = true, MongoImageId = null },
-                new Vehicle { Id = 2, Brand = "Ford", Model = "Focus", DailyPrice = 16500m, IsAvailable = true, MongoImageId = null },
-                new Vehicle { Id = 3, Brand = "BMW", Model = "320i", DailyPrice = 32000m, IsAvailable = true, MongoImageId = null },
-                new Vehicle { Id = 4, Brand = "Škoda", Model = "Octavia", DailyPrice = 18500m, IsAvailable = true, MongoImageId = null }
+                new Vehicle { Id = 1, Brand = "Toyota", Model = "Corolla", DailyPrice = 17500m, IsAvailable = true, MongoImageIds = new List<string>() },
+                new Vehicle { Id = 2, Brand = "Ford", Model = "Focus", DailyPrice = 16500m, IsAvailable = true, MongoImageIds = new List<string>() },
+                new Vehicle { Id = 3, Brand = "BMW", Model = "320i", DailyPrice = 32000m, IsAvailable = true, MongoImageIds = new List<string>() },
+                new Vehicle { Id = 4, Brand = "Škoda", Model = "Octavia", DailyPrice = 18500m, IsAvailable = true, MongoImageIds = new List<string>() }
             );
         });
 

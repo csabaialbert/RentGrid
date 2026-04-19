@@ -23,36 +23,40 @@ public class VehicleController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    public async Task<IActionResult> CreateVehicle([FromForm] CreateVehicleDto dto, [FromForm] IFormFile image)
+    public async Task<IActionResult> CreateVehicle([FromForm] CreateVehicleDto dto, [FromForm] List<IFormFile> images)
     {
         if (dto is null)
         {
             return BadRequest("A jármű adatai kötelezőek.");
         }
 
-        if (image == null || image.Length == 0)
+        if (images == null || images.Count == 0)
         {
-            return BadRequest("A kép feltöltése kötelező.");
+            return BadRequest("Legalább egy kép feltöltése kötelező.");
         }
 
-        if (string.IsNullOrWhiteSpace(image.ContentType) || !image.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
+        if (images.Any(img => string.IsNullOrWhiteSpace(img.ContentType) || !img.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase)))
         {
-            return BadRequest("Csak képfájl tölthető fel.");
+            return BadRequest("Csak képfájlok tölthetők fel.");
         }
 
-        string? imageId = null;
+        var imageIds = new List<string>();
 
         try
         {
-            using var stream = image.OpenReadStream();
-            imageId = await _imageService.UploadImageAsync(stream, image.FileName);
+            foreach (var image in images)
+            {
+                using var stream = image.OpenReadStream();
+                var imageId = await _imageService.UploadImageAsync(stream, image.FileName);
+                imageIds.Add(imageId);
+            }
 
             var vehicle = new Vehicle
             {
                 Brand = dto.Brand,
                 Model = dto.Model,
                 DailyPrice = dto.DailyPrice,
-                MongoImageId = imageId,
+                MongoImageIds = imageIds,
                 IsAvailable = true
             };
 
@@ -63,7 +67,8 @@ public class VehicleController : ControllerBase
         }
         catch (Exception ex)
         {
-            if (!string.IsNullOrWhiteSpace(imageId))
+            // Töröljük a már feltöltött képeket hiba esetén
+            foreach (var imageId in imageIds)
             {
                 try
                 {
@@ -110,7 +115,7 @@ public class VehicleController : ControllerBase
                 Model = v.Model,
                 DailyPrice = v.DailyPrice,
                 IsAvailable = v.IsAvailable,
-                ImageFileId = v.MongoImageId
+                ImageFileIds = v.MongoImageIds
             })
             .ToListAsync();
 
@@ -137,6 +142,111 @@ public class VehicleController : ControllerBase
         catch (InvalidOperationException ex)
         {
             return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPatch("{id}/price")]
+    public async Task<IActionResult> UpdateVehiclePrice(int id, [FromBody] UpdateVehiclePriceDto dto)
+    {
+        if (dto is null || dto.DailyPrice <= 0)
+        {
+            return BadRequest("Az érvényes napi ár megadása kötelező.");
+        }
+
+        var vehicle = await _dbContext.Vehicles.FindAsync(id);
+        if (vehicle is null)
+        {
+            return NotFound("A jármű nem található.");
+        }
+
+        vehicle.DailyPrice = dto.DailyPrice;
+        await _dbContext.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("{id}/images")]
+    public async Task<IActionResult> AddVehicleImages(int id, [FromForm] List<IFormFile> images)
+    {
+        if (images == null || images.Count == 0)
+        {
+            return BadRequest("Legalább egy kép feltöltése kötelező.");
+        }
+
+        if (images.Any(img => string.IsNullOrWhiteSpace(img.ContentType) || !img.ContentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase)))
+        {
+            return BadRequest("Csak képfájlok tölthetők fel.");
+        }
+
+        var vehicle = await _dbContext.Vehicles.FindAsync(id);
+        if (vehicle is null)
+        {
+            return NotFound("A jármű nem található.");
+        }
+
+        var newImageIds = new List<string>();
+
+        try
+        {
+            foreach (var image in images)
+            {
+                using var stream = image.OpenReadStream();
+                var imageId = await _imageService.UploadImageAsync(stream, image.FileName);
+                newImageIds.Add(imageId);
+            }
+
+            vehicle.MongoImageIds.AddRange(newImageIds);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok(new { ImageIds = newImageIds });
+        }
+        catch (Exception ex)
+        {
+            // Töröljük a már feltöltött képeket hiba esetén
+            foreach (var imageId in newImageIds)
+            {
+                try
+                {
+                    await _imageService.DeleteImageAsync(imageId);
+                }
+                catch
+                {
+                    // A tisztítás sikertelensége esetén sem dobunk újabb hibát.
+                }
+            }
+
+            return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id}/images/{imageId}")]
+    public async Task<IActionResult> RemoveVehicleImage(int id, string imageId)
+    {
+        var vehicle = await _dbContext.Vehicles.FindAsync(id);
+        if (vehicle is null)
+        {
+            return NotFound("A jármű nem található.");
+        }
+
+        if (!vehicle.MongoImageIds.Contains(imageId))
+        {
+            return BadRequest("A kép nem tartozik ehhez a járműhöz.");
+        }
+
+        try
+        {
+            await _imageService.DeleteImageAsync(imageId);
+            vehicle.MongoImageIds.Remove(imageId);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
         }
         catch (Exception ex)
         {

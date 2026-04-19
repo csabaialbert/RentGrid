@@ -7,6 +7,6 @@ namespace RentGrid.Api.Dtos
         public required string Model { get; set; }
         public decimal DailyPrice { get; set; }
         public bool IsAvailable { get; set; }
-        public string? ImageFileId { get; set; }
+        public List<string> ImageFileIds { get; set; } = new();
     }
 }

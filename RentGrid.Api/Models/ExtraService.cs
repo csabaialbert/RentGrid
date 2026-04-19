@@ -10,6 +10,7 @@ namespace RentGrid.Api.Models
         public int Id { get; set; }
         public required string Name { get; set; } // pl. GPS, Biztosítás
         public decimal Price { get; set; }
+        public bool IsActive { get; set; } = true;
         // Navigáció a kapcsolótáblához
         public List<BookingExtra> BookingExtras { get; set; } = new();
     }

@@ -23,16 +23,16 @@ public class BookingController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto dto)
+    public async Task<ActionResult<BookingCreatedDto>> CreateBooking([FromBody] CreateBookingDto dto)
     {
         if (dto is null)
         {
             return BadRequest("A foglalás adatai kötelezőek.");
         }
 
-        if (dto.EndDate <= dto.StartDate)
+        if (dto.EndDate < dto.StartDate)
         {
-            return BadRequest("Az EndDate-nek később kell lennie, mint a StartDate.");
+            return BadRequest("Az EndDate nem lehet a StartDate előtt.");
         }
 
         var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
@@ -68,7 +68,7 @@ public class BookingController : ControllerBase
             return BadRequest("Érvénytelen extra szolgáltatás azonosító.");
         }
 
-        var days = (dto.EndDate.Date - dto.StartDate.Date).Days;
+        var days = Math.Max(1, (dto.EndDate.Date - dto.StartDate.Date).Days);
         var totalPrice = days * vehicle.DailyPrice + extraServices.Sum(es => es.Price);
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync();
@@ -93,7 +93,17 @@ public class BookingController : ControllerBase
             await _dbContext.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            return Created($"api/booking/{booking.Id}", booking);
+            var response = new BookingCreatedDto
+            {
+                Id = booking.Id,
+                VehicleId = booking.VehicleId,
+                StartDate = booking.StartDate,
+                EndDate = booking.EndDate,
+                TotalPrice = booking.TotalPrice,
+                Status = booking.Status
+            };
+
+            return Created($"api/booking/{booking.Id}", response);
         }
         catch (Exception ex)
         {
@@ -181,7 +191,7 @@ public class BookingController : ControllerBase
                 VehicleBrand = b.Vehicle!.Brand,
                 VehicleModel = b.Vehicle.Model,
                 VehicleDailyPrice = b.Vehicle.DailyPrice,
-                VehicleImageFileId = b.Vehicle.MongoImageId,
+                VehicleImageFileId = b.Vehicle.MongoImageIds.FirstOrDefault(),
                 StartDate = b.StartDate,
                 EndDate = b.EndDate,
                 TotalPrice = b.TotalPrice,
@@ -225,7 +235,7 @@ public class BookingController : ControllerBase
                 VehicleBrand = b.Vehicle!.Brand,
                 VehicleModel = b.Vehicle.Model,
                 VehicleDailyPrice = b.Vehicle.DailyPrice,
-                VehicleImageFileId = b.Vehicle.MongoImageId,
+                VehicleImageFileId = b.Vehicle.MongoImageIds.FirstOrDefault(),
                 StartDate = b.StartDate,
                 EndDate = b.EndDate,
                 TotalPrice = b.TotalPrice,

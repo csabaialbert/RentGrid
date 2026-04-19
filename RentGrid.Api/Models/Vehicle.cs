@@ -13,8 +13,8 @@ namespace RentGrid.Api.Models
         public decimal DailyPrice { get; set; }
         public bool IsAvailable { get; set; } = true;
         
-        // Ez mutat a MongoDB GridFS fájlra
-        public string? MongoImageId { get; set; }
+        // Ez mutat a MongoDB GridFS fájlokra
+        public List<string> MongoImageIds { get; set; } = new();
 
         public List<Booking> Bookings { get; set; } = new();
     }

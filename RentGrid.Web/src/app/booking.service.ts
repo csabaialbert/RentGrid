@@ -15,6 +15,15 @@ export interface BookingExtra {
   price: number;
 }
 
+export interface BookingCreatedResponse {
+  id: number;
+  vehicleId: number;
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  status: string;
+}
+
 export interface MyBooking {
   id: number;
   vehicleId: number;
@@ -36,8 +45,8 @@ export class BookingService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = 'http://localhost:5001/api/booking';
 
-  createBooking(payload: CreateBookingRequest): Observable<void> {
-    return this.http.post<void>(this.apiUrl, payload);
+  createBooking(payload: CreateBookingRequest): Observable<BookingCreatedResponse> {
+    return this.http.post<BookingCreatedResponse>(this.apiUrl, payload);
   }
 
   getMyBookings(): Observable<MyBooking[]> {

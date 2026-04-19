@@ -82,6 +82,9 @@ namespace RentGrid.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,18 +101,21 @@ namespace RentGrid.Api.Migrations
                         new
                         {
                             Id = 1,
+                            IsActive = true,
                             Name = "GPS",
                             Price = 2000m
                         },
                         new
                         {
                             Id = 2,
+                            IsActive = true,
                             Name = "Gyerekülés",
                             Price = 1500m
                         },
                         new
                         {
                             Id = 3,
+                            IsActive = true,
                             Name = "Extra biztosítás",
                             Price = 5000m
                         });
@@ -181,7 +187,7 @@ namespace RentGrid.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MongoImageId")
+                    b.Property<string>("MongoImageIds")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -195,7 +201,8 @@ namespace RentGrid.Api.Migrations
                             Brand = "Toyota",
                             DailyPrice = 17500m,
                             IsAvailable = true,
-                            Model = "Corolla"
+                            Model = "Corolla",
+                            MongoImageIds = ""
                         },
                         new
                         {
@@ -203,7 +210,8 @@ namespace RentGrid.Api.Migrations
                             Brand = "Ford",
                             DailyPrice = 16500m,
                             IsAvailable = true,
-                            Model = "Focus"
+                            Model = "Focus",
+                            MongoImageIds = ""
                         },
                         new
                         {
@@ -211,7 +219,8 @@ namespace RentGrid.Api.Migrations
                             Brand = "BMW",
                             DailyPrice = 32000m,
                             IsAvailable = true,
-                            Model = "320i"
+                            Model = "320i",
+                            MongoImageIds = ""
                         },
                         new
                         {
@@ -219,7 +228,8 @@ namespace RentGrid.Api.Migrations
                             Brand = "Škoda",
                             DailyPrice = 18500m,
                             IsAvailable = true,
-                            Model = "Octavia"
+                            Model = "Octavia",
+                            MongoImageIds = ""
                         });
                 });
 

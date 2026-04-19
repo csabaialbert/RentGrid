@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RentGrid.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a7654b726aa19e0833b5a80dc05a00994fb2caa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b89786f6f0e01c83a1d06a0f2cc2a353d5388674")]
 [assembly: System.Reflection.AssemblyProductAttribute("RentGrid.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RentGrid.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

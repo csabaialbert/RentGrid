@@ -1,8 +1,10 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { finalize } from 'rxjs';
 import { DashboardService, DashboardStats, AdminBooking } from './dashboard.service';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +21,15 @@ import { DashboardService, DashboardStats, AdminBooking } from './dashboard.serv
                   <h2 class="h4 mb-1">Admin Dashboard</h2>
                   <p class="text-muted mb-0">Áttekintés a RentGrid kulcsfontosságú statisztikáiról.</p>
                 </div>
-                <a class="btn btn-outline-secondary" routerLink="/">Vissza a kezdőlapra</a>
+                <div class="d-flex gap-2 flex-wrap">
+                  <a class="btn btn-primary" routerLink="/vehicle-admin">
+                    <i class="bi bi-car-front"></i> Járművek kezelése
+                  </a>
+                  <a class="btn btn-outline-info" routerLink="/extras-admin">
+                    <i class="bi bi-journal-plus"></i> Extrák kezelése
+                  </a>
+                  <a class="btn btn-outline-secondary" routerLink="/">Vissza a kezdőlapra</a>
+                </div>
               </div>
 
               <div *ngIf="loading" class="text-center py-5">
@@ -30,34 +40,36 @@ import { DashboardService, DashboardStats, AdminBooking } from './dashboard.serv
 
               <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-              <div *ngIf="stats && !loading">
-                <div class="row g-4 mb-4">
-                  <div class="col-sm-6 col-xl-3" *ngFor="let card of statCards">
-                    <div class="card h-100 border-0 shadow-sm rounded-4">
-                      <div class="card-body">
-                        <h6 class="text-uppercase text-muted mb-3">{{ card.title }}</h6>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div>
-                            <p class="h3 mb-0">{{ card.value }}</p>
-                            <p class="text-muted mb-0">{{ card.subtitle }}</p>
+              <div *ngIf="!loading">
+                <div *ngIf="stats">
+                  <div class="row g-4 mb-4">
+                    <div class="col-sm-6 col-xl-3" *ngFor="let card of statCards">
+                      <div class="card h-100 border-0 shadow-sm rounded-4">
+                        <div class="card-body">
+                          <h6 class="text-uppercase text-muted mb-3">{{ card.title }}</h6>
+                          <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                              <p class="h3 mb-0">{{ card.value }}</p>
+                              <p class="text-muted mb-0">{{ card.subtitle }}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="card border-0 shadow-sm rounded-4 mb-4">
-                  <div class="card-body">
-                    <h5 class="h5 mb-3">Legnépszerűbb jármű</h5>
-                    <div *ngIf="stats.mostPopularVehicle; else noPopularVehicle">
-                      <p class="mb-2"><strong>{{ stats.mostPopularVehicle.brand }} {{ stats.mostPopularVehicle.model }}</strong></p>
-                      <p class="mb-1 text-muted">Foglalások száma: {{ stats.mostPopularVehicle.bookingCount }}</p>
-                      <p class="text-muted mb-0">Javasolt további promóciós akció vagy készletkezelés ehhez a járműhöz.</p>
+                  <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body">
+                      <h5 class="h5 mb-3">Legnépszerűbb jármű</h5>
+                      <div *ngIf="stats.mostPopularVehicle; else noPopularVehicle">
+                        <p class="mb-2"><strong>{{ stats.mostPopularVehicle.brand }} {{ stats.mostPopularVehicle.model }}</strong></p>
+                        <p class="mb-1 text-muted">Foglalások száma: {{ stats.mostPopularVehicle.bookingCount }}</p>
+                        <p class="text-muted mb-0">Javasolt további promóciós akció vagy készletkezelés ehhez a járműhöz.</p>
+                      </div>
+                      <ng-template #noPopularVehicle>
+                        <p class="text-muted mb-0">Még nincs elég foglalás az adatok meghatározásához.</p>
+                      </ng-template>
                     </div>
-                    <ng-template #noPopularVehicle>
-                      <p class="text-muted mb-0">Még nincs elég foglalás az adatok meghatározásához.</p>
-                    </ng-template>
                   </div>
                 </div>
 
@@ -157,7 +169,7 @@ import { DashboardService, DashboardStats, AdminBooking } from './dashboard.serv
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let booking of paginatedAdminBookings()">
+                          <tr *ngFor="let booking of paginatedAdminBookings(); trackBy: trackById">
                             <td>{{ booking.id }}</td>
                             <td>
                               <div>{{ booking.userFullName }}</div>
@@ -250,12 +262,13 @@ import { DashboardService, DashboardStats, AdminBooking } from './dashboard.serv
 })
 export class DashboardComponent implements OnInit {
   private readonly dashboardService = inject(DashboardService);
-
+  private readonly cdr = inject(ChangeDetectorRef);
   protected stats: DashboardStats | null = null;
   protected loading = false;
   protected error: string | null = null;
 
-  protected adminBookings: AdminBooking[] = [];
+  //protected adminBookings: AdminBooking[] = [];
+  protected adminBookings = signal<AdminBooking[]>([]);
   protected adminLoading = false;
   protected adminError: string | null = null;
   protected adminActionLoading: Record<number, boolean> = {};
@@ -265,21 +278,41 @@ export class DashboardComponent implements OnInit {
   protected adminPage = signal(1);
   protected adminPageSize = signal(10);
   protected selectedAdminBooking = signal<AdminBooking | null>(null);
-  protected readonly adminSummary = computed(() => ({
-    total: this.adminBookings.length,
-    pending: this.adminBookings.filter(b => b.status === 'Pending').length,
-    confirmed: this.adminBookings.filter(b => b.status === 'Confirmed').length,
-    cancelled: this.adminBookings.filter(b => b.status === 'Cancelled').length
-  }));
+  
+  protected readonly adminSummary = computed(() => {
+  const bookings = this.adminBookings(); // Signal hívása
+  return {
+    total: bookings.length,
+    pending: bookings.filter(b => b.status === 'Pending').length,
+    confirmed: bookings.filter(b => b.status === 'Confirmed').length,
+    cancelled: bookings.filter(b => b.status === 'Cancelled').length
+  };
+});
+  //protected readonly adminSummary = computed(() => ({
+   // total: this.adminBookings.length,
+   // pending: this.adminBookings.filter(b => b.status === 'Pending').length,
+   // confirmed: this.adminBookings.filter(b => b.status === 'Confirmed').length,
+   // cancelled: this.adminBookings.filter(b => b.status === 'Cancelled').length
+  //}));
+
   protected readonly filteredAdminBookings = computed(() => {
-    const term = this.adminSearchTerm().trim().toLowerCase();
-    return this.adminBookings.filter((booking) => {
-      const matchesStatus = this.adminStatusFilter() === 'All' || booking.status === this.adminStatusFilter();
-      const query = `${booking.userFullName} ${booking.userEmail} ${booking.vehicleBrand} ${booking.vehicleModel}`.toLowerCase();
-      const matchesSearch = !term || query.includes(term);
-      return matchesStatus && matchesSearch;
-    });
+  const term = this.adminSearchTerm().trim().toLowerCase();
+  const bookings = this.adminBookings(); // Signal hívása
+  return bookings.filter((booking) => {
+    const matchesStatus = this.adminStatusFilter() === 'All' || booking.status === this.adminStatusFilter();
+    const query = `${booking.userFullName} ${booking.userEmail} ${booking.vehicleBrand} ${booking.vehicleModel}`.toLowerCase();
+    return matchesStatus && (!term || query.includes(term));
   });
+});
+ // protected readonly filteredAdminBookings = computed(() => {
+ //   const term = this.adminSearchTerm().trim().toLowerCase();
+ //   return this.adminBookings.filter((booking) => {
+  //    const matchesStatus = this.adminStatusFilter() === 'All' || booking.status === this.adminStatusFilter();
+  //    const query = `${booking.userFullName} ${booking.userEmail} ${booking.vehicleBrand} ${booking.vehicleModel}`.toLowerCase();
+  //    const matchesSearch = !term || query.includes(term);
+  //    return matchesStatus && matchesSearch;
+  //  });
+  //});
   protected readonly adminPageCount = computed(() => Math.max(1, Math.ceil(this.filteredAdminBookings().length / this.adminPageSize())));
   protected readonly paginatedAdminBookings = computed(() => {
     const page = this.adminPage();
@@ -305,62 +338,79 @@ export class DashboardComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.dashboardService.getStats().subscribe({
-      next: (data) => {
-        this.stats = data;
-        this.statCards = [
-          { title: 'Összbevétel', value: `${data.totalRevenue.toLocaleString('hu-HU')} Ft`, subtitle: 'Minden foglalás bevétele' },
-          { title: 'Regisztrált felhasználók', value: data.registeredUserCount.toString(), subtitle: 'Összes felhasználó' },
-          { title: 'Aktív foglalások', value: data.activeBookingCount.toString(), subtitle: 'Most aktív időszakban' }
-        ];
-      },
-      error: (err) => {
-        this.error = err?.error?.message ?? 'Hiba történt a dashboard statisztikák betöltésekor.';
-      },
-      complete: () => {
+    this.dashboardService.getStats()
+      .pipe(finalize(() => {
+        
         this.loading = false;
-      }
-    });
+        this.cdr.detectChanges();
+        console.log('Statisztikák betöltése befejeződött', this.loading);
+      }))
+      .subscribe({
+        next: (data) => {
+          this.stats = data;
+          this.statCards = [
+            { title: 'Összbevétel', value: `${data.totalRevenue.toLocaleString('hu-HU')} Ft`, subtitle: 'Minden foglalás bevétele' },
+            { title: 'Regisztrált felhasználók', value: data.registeredUserCount.toString(), subtitle: 'Összes felhasználó' },
+            { title: 'Aktív foglalások', value: data.activeBookingCount.toString(), subtitle: 'Most aktív időszakban' }
+          ];
+          console.log('Statisztikák betöltve:', data);
+        },
+        error: (err) => {
+          this.error = err?.error?.message ?? 'Hiba történt a dashboard statisztikák betöltésekor.';
+          console.error('Statisztikák betöltése sikertelen:', err);
+        }
+      });
   }
 
   protected loadAdminBookings(): void {
     this.adminLoading = true;
     this.adminError = null;
 
-    this.dashboardService.getAdminBookings().subscribe({
-      next: (data) => {
-        this.adminBookings = data;
-        this.editingStatus = data.reduce((result, booking) => ({
-          ...result,
-          [booking.id]: booking.status
-        }), {} as Record<number, string>);
-      },
-      error: (err) => {
-        this.adminError = err?.error?.message ?? 'Hiba történt az admin foglalások betöltésekor.';
-      },
-      complete: () => {
+    this.dashboardService.getAdminBookings()
+      .pipe(finalize(() => {
         this.adminLoading = false;
-      }
-    });
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: (data) => {
+  this.adminBookings.set(data); // .set() használata a tömb frissítéséhez
+  
+  // Az editingStatus-t is frissítsük teljesen, hogy szinkronban legyen
+  this.editingStatus = data.reduce((result, booking) => ({
+    ...result,
+    [booking.id]: booking.status
+  }), {} as Record<number, string>);
+},
+        error: (err) => {
+          this.adminError = err?.error?.message ?? 'Hiba történt az admin foglalások betöltésekor.';
+        }
+      });
   }
 
-  protected updateBookingStatus(bookingId: number): void {
-    const status = this.editingStatus[bookingId];
-    this.adminActionLoading[bookingId] = true;
+ protected updateBookingStatus(bookingId: number): void {
+  const status = this.editingStatus[bookingId];
+  this.adminActionLoading[bookingId] = true;
 
-    this.dashboardService.updateBookingStatus(bookingId, status).subscribe({
+  this.dashboardService.updateBookingStatus(bookingId, status)
+    .pipe(finalize(() => {
+      this.adminActionLoading[bookingId] = false;
+      this.cdr.detectChanges();
+    }))
+    .subscribe({
       next: () => {
-        this.loadAdminBookings();
-      },
+  // A signal.update kényszeríti a computed értékek újraszámolását!
+  this.adminBookings.update(bookings => 
+    bookings.map(b => b.id === bookingId ? { ...b, status: status } : b)
+  );
+
+  this.editingStatus[bookingId] = status;
+  this.cdr.detectChanges(); // Biztonság kedvéért
+},
       error: (err) => {
-        window.alert(err?.error?.message ?? 'Hiba történt a státusz mentésekor.');
-        this.adminActionLoading[bookingId] = false;
-      },
-      complete: () => {
-        this.adminActionLoading[bookingId] = false;
+        window.alert(err?.error?.message ?? 'Hiba történt.');
       }
     });
-  }
+}
 
   protected goToPreviousPage(): void {
     this.adminPage.update((current) => Math.max(1, current - 1));
@@ -373,4 +423,5 @@ export class DashboardComponent implements OnInit {
   protected showBookingDetails(booking: AdminBooking): void {
     this.selectedAdminBooking.set(booking);
   }
+  protected trackById(index: number, item: AdminBooking) { return item.id; }
 }
