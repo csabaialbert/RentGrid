@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 5s # 5 másodpercenként kérdez le (fejlesztéshez ideális)
+
+scrape_configs:
+  - job_name: 'rentgrid-api'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['api:8080']

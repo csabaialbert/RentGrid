@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using RentGrid.Api.Data;
 using RentGrid.Api.Services;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Instrumentation;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -53,6 +55,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(metrics => 
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation() // Opcionális, de hasznos
+            .AddRuntimeInstrumentation()    // CPU, RAM stb.
+            .AddMeter("Microsoft.AspNetCore.Hosting")
+            .AddPrometheusExporter();
+    });
 
 var app = builder.Build();
 
@@ -68,6 +80,7 @@ if (!disableHttpsRedirection)
     app.UseHttpsRedirection();
 }
 app.UseCors("AllowAngular");
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.UseAuthentication();
 app.UseAuthorization();
 

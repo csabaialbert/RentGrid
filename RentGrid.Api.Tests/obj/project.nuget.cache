@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "JVNdoYcLydA=",
+  "dgSpecHash": "MmIC1GVzaOE=",
   "success": true,
   "projectFilePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
   "expectedPackageFiles": [
@@ -39,13 +39,20 @@
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\10.0.0\\microsoft.entityframeworkcore.tools.10.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\10.0.6\\microsoft.extensions.caching.abstractions.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.caching.memory\\10.0.6\\microsoft.extensions.caching.memory.10.0.6.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.0\\microsoft.extensions.configuration.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.configuration.binder\\8.0.0\\microsoft.extensions.configuration.binder.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\10.0.6\\microsoft.extensions.dependencyinjection.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.6\\microsoft.extensions.dependencyinjection.abstractions.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.dependencymodel\\10.0.0\\microsoft.extensions.dependencymodel.10.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\8.0.0\\microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\8.0.0\\microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\8.0.0\\microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.logging\\10.0.6\\microsoft.extensions.logging.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.6\\microsoft.extensions.logging.abstractions.10.0.6.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.logging.configuration\\8.0.0\\microsoft.extensions.logging.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.options\\10.0.6\\microsoft.extensions.options.10.0.6.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\8.0.0\\microsoft.extensions.options.configurationextensions.8.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.6\\microsoft.extensions.primitives.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identity.client\\4.73.1\\microsoft.identity.client.4.73.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\microsoft.identity.client.extensions.msal\\4.73.1\\microsoft.identity.client.extensions.msal.4.73.1.nupkg.sha512",
@@ -74,6 +81,14 @@
     "C:\\Users\\csaba\\.nuget\\packages\\nunit\\4.3.2\\nunit.4.3.2.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\nunit.analyzers\\4.7.0\\nunit.analyzers.4.7.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\nunit3testadapter\\5.0.0\\nunit3testadapter.5.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry\\1.9.0\\opentelemetry.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.api\\1.15.0\\opentelemetry.api.1.15.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.9.0\\opentelemetry.api.providerbuilderextensions.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.exporter.prometheus.aspnetcore\\1.9.0-beta.2\\opentelemetry.exporter.prometheus.aspnetcore.1.9.0-beta.2.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.9.0\\opentelemetry.extensions.hosting.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.9.0\\opentelemetry.instrumentation.aspnetcore.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.9.0\\opentelemetry.instrumentation.http.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.15.0\\opentelemetry.instrumentation.runtime.1.15.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\sharpcompress\\0.30.1\\sharpcompress.0.30.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\snappier\\1.0.0\\snappier.1.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.clientmodel\\1.5.1\\system.clientmodel.1.5.1.nupkg.sha512",
@@ -91,37 +106,12 @@
     "C:\\Users\\csaba\\.nuget\\packages\\system.memory.data\\8.0.1\\system.memory.data.8.0.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.reflection.metadataloadcontext\\7.0.0\\system.reflection.metadataloadcontext.7.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.resources.extensions\\9.0.0\\system.resources.extensions.9.0.0.nupkg.sha512",
-    "C:\\Users\\csaba\\.nuget\\packages\\system.security.cryptography.pkcs\\9.0.4\\system.security.cryptography.pkcs.9.0.4.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\system.security.cryptography.pkcs\\10.0.6\\system.security.cryptography.pkcs.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.security.cryptography.protecteddata\\9.0.4\\system.security.cryptography.protecteddata.9.0.4.nupkg.sha512",
-    "C:\\Users\\csaba\\.nuget\\packages\\system.security.cryptography.xml\\9.0.0\\system.security.cryptography.xml.9.0.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\system.security.cryptography.xml\\10.0.6\\system.security.cryptography.xml.10.0.6.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.security.permissions\\9.0.0\\system.security.permissions.9.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.windows.extensions\\9.0.0\\system.windows.extensions.9.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'System.Security.Cryptography.Xml' 9.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-37gx-xxp4-5rgx",
-      "projectPath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
-      "libraryId": "System.Security.Cryptography.Xml",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'System.Security.Cryptography.Xml' 9.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-w3x6-4m5h-cxqf",
-      "projectPath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
-      "libraryId": "System.Security.Cryptography.Xml",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

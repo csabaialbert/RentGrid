@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "u6GkBEP3TAA=",
+  "dgSpecHash": "aqtZFf3qRQw=",
   "success": true,
   "projectFilePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api\\RentGrid.Api.csproj",
   "expectedPackageFiles": [
@@ -48,6 +48,14 @@
     "C:\\Users\\csaba\\.nuget\\packages\\mongodb.driver\\3.1.0\\mongodb.driver.3.1.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry\\1.9.0\\opentelemetry.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.api\\1.15.0\\opentelemetry.api.1.15.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.9.0\\opentelemetry.api.providerbuilderextensions.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.exporter.prometheus.aspnetcore\\1.9.0-beta.2\\opentelemetry.exporter.prometheus.aspnetcore.1.9.0-beta.2.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.9.0\\opentelemetry.extensions.hosting.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.9.0\\opentelemetry.instrumentation.aspnetcore.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.9.0\\opentelemetry.instrumentation.http.1.9.0.nupkg.sha512",
+    "C:\\Users\\csaba\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.15.0\\opentelemetry.instrumentation.runtime.1.15.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\sharpcompress\\0.30.1\\sharpcompress.0.30.1.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\snappier\\1.0.0\\snappier.1.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\system.clientmodel\\1.5.1\\system.clientmodel.1.5.1.nupkg.sha512",

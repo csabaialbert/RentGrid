@@ -638,3 +638,11 @@ C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\tempbuild\runtimes\win-arm
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\tempbuild\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\tempbuild\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\obj\tempbuild\runtimes\win\lib\net9.0\System.Windows.Extensions.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Api.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Api.ProviderBuilderExtensions.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Exporter.Prometheus.AspNetCore.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Extensions.Hosting.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Instrumentation.AspNetCore.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Instrumentation.Http.dll
+C:\Users\csaba\source\repos\RentGrid\RentGrid.Api\bin\Debug\net10.0\OpenTelemetry.Instrumentation.Runtime.dll
