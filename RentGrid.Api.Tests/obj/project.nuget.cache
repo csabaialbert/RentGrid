@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "MmIC1GVzaOE=",
+  "dgSpecHash": "4r+9WPFc0vc=",
   "success": true,
   "projectFilePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
   "expectedPackageFiles": [
@@ -113,5 +113,18 @@
     "C:\\Users\\csaba\\.nuget\\packages\\system.windows.extensions\\9.0.0\\system.windows.extensions.9.0.0.nupkg.sha512",
     "C:\\Users\\csaba\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Api' 1.15.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
+      "projectPath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\csaba\\source\\repos\\RentGrid\\RentGrid.Api.Tests\\RentGrid.Api.Tests.csproj",
+      "libraryId": "OpenTelemetry.Api",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }
