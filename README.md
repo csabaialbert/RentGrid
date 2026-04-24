@@ -1,40 +1,40 @@
 # RentGrid
 
-**RentGrid** is a full-stack car rental management system developed as part of an MSc coursework project.
-It demonstrates the design and implementation of a complete web-based system, including backend services, frontend application, database integration, and system observability.
+A **RentGrid** egy full-stack autókölcsönző menedzsment rendszer, amely egy MSc kurzusfeladat részeként készült.  
+Bemutatja egy teljes webalapú rendszer megtervezését és megvalósítását, beleértve a backend szolgáltatásokat, a frontend alkalmazást, az adatbázis-integrációt és a rendszer megfigyelhetőségét.
 
 ---
 
-## Academic Context
+## Akadémiai háttér
 
-This project was created to fulfill the requirements of a university assignment focused on building a complete web system.
+Ez a projekt egy egyetemi feladat követelményeinek teljesítésére készült, amely egy teljes webes rendszer felépítésére fókuszált.
 
-### Covered Requirements
+### Teljesített követelmények
 
-* Full-stack web application (frontend + backend)
-* RESTful API with CRUD operations
-* Authentication and user registration
-* Session handling (JWT-based)
-* Database integration with multiple entities and relationships
-* Web-based GUI for user interaction
-* Software documentation (`/docs` folder)
-* AI usage and prompt analysis (`/prompts` folder)
-
----
-
-## Features
-
-*  JWT-based authentication & authorization
-*  User registration and management
-*  Vehicle management (CRUD operations)
-*  Booking system
-*  Image storage using MongoDB GridFS
-*  API monitoring with Prometheus & Grafana
-*  RESTful API architecture
+* Full-stack webalkalmazás (frontend + backend)
+* RESTful API CRUD műveletekkel
+* Hitelesítés és felhasználói regisztráció
+* Munkamenet-kezelés (JWT alapú)
+* Adatbázis-integráció több entitással és kapcsolatokkal
+* Webes felhasználói felület (GUI)
+* Szoftverdokumentáció (`/docs` mappa)
+* AI használat és prompt elemzés (`/prompts` mappa)
 
 ---
 
-##  Tech Stack
+## Funkciók
+
+* JWT alapú hitelesítés és jogosultságkezelés  
+* Felhasználói regisztráció és menedzsment  
+* Járműkezelés (CRUD műveletek)  
+* Foglalási rendszer  
+* Képtárolás MongoDB GridFS segítségével  
+* API monitorozás Prometheus és Grafana használatával  
+* RESTful API architektúra  
+
+---
+
+## Technológiai stack
 
 ### Backend
 
@@ -47,7 +47,7 @@ This project was created to fulfill the requirements of a university assignment 
 
 * Angular (v21)
 
-### Observability & DevOps
+### Megfigyelhetőség és DevOps
 
 * Docker
 * Prometheus
@@ -56,7 +56,7 @@ This project was created to fulfill the requirements of a university assignment 
 
 ---
 
-## Requirements
+## Követelmények
 
 ### Backend
 
@@ -67,18 +67,18 @@ This project was created to fulfill the requirements of a university assignment 
 * Node.js 20+
 * Angular 21
 
-### Databases
+### Adatbázisok
 
 * SQL Server
 * MongoDB
 
-### Optional
+### Opcionális
 
 * Docker
 
 ---
 
-## Project Structure
+## Projekt struktúra
 
 ```plaintext
 RentGrid/
@@ -89,27 +89,26 @@ RentGrid/
 ├── prompts/                # AI usage analysis (assignment requirement)
 ├── docker-compose.yml      # Containerized setup
 ```
-
 ---
 
-##  Getting Started
+## Első lépések
 
-### Option 1 – Docker (Recommended)
+### 1. lehetőség – Docker (ajánlott)
 
 ```bash
 docker-compose up --build
 ```
 
-This will start:
+Ez elindítja:
 
-* Backend API
-* Frontend application
-* Prometheus
-* Grafana
+* Backend API  
+* Frontend alkalmazás  
+* Prometheus  
+* Grafana  
 
 ---
 
-### Option 2 – Manual Setup
+### 2. lehetőség – Manuális beállítás
 
 #### Backend
 
@@ -129,63 +128,63 @@ ng serve
 
 ---
 
-## Authentication
+## Hitelesítés
 
-The system uses **JWT Bearer authentication**.
-Only authenticated users can perform CRUD operations, as required by the assignment.
-
----
-
-##  Monitoring
-
-The application includes **observability features** using:
-
-* OpenTelemetry for instrumentation
-* Prometheus for metrics collection
-* Grafana for visualization
-
-These tools provide insight into:
-
-* request latency
-* error rates
-* endpoint usage
+A rendszer **JWT Bearer alapú hitelesítést** használ.  
+Csak hitelesített felhasználók végezhetnek CRUD műveleteket, a feladat követelményeinek megfelelően.
 
 ---
 
-##  Screenshots
+## Monitorozás
 
-### API Monitoring (Grafana)
+Az alkalmazás **megfigyelhetőségi (observability) funkciókat** tartalmaz az alábbi eszközökkel:
+
+* OpenTelemetry – instrumentációhoz  
+* Prometheus – metrikák gyűjtéséhez  
+* Grafana – vizualizációhoz  
+
+Ezek az eszközök betekintést nyújtanak:
+
+* kérés késleltetés (latency)  
+* hibaarányok  
+* végpont használat  
+
+---
+
+## Képernyőképek
+
+### API monitorozás (Grafana)
 
 ![Grafana Dashboard](docs/images/grafana-dashboard.png)
 
 ---
 
-##  Documentation
+## Dokumentáció
 
-* Detailed system documentation is available in the `/docs` folder
-* AI usage and prompt analysis can be found in the `/prompts` folder
-
----
-
-## Technology Choices
-
-The selected technologies were chosen based on the following considerations:
-
-* **ASP.NET Core** – robust and scalable backend framework
-* **Angular** – structured frontend for maintainable UI development
-* **SQL Server** – reliable relational data storage
-* **MongoDB (GridFS)** – efficient handling of binary data (images)
-* **Docker** – simplifies environment setup and ensures consistency
-* **Prometheus & Grafana** – enable production-style monitoring and diagnostics
+* Részletes rendszerdokumentáció a `/docs` mappában található  
+* Az AI használat és prompt elemzés a `/prompts` mappában érhető el  
 
 ---
 
-##  Additional Notes
+## Technológiai döntések
 
-While the project fulfills all academic requirements, it also includes additional features such as monitoring and containerization, demonstrating a production-oriented development approach.
+A választott technológiák az alábbi szempontok alapján kerültek kiválasztásra:
+
+* **ASP.NET Core** – robusztus és skálázható backend keretrendszer  
+* **Angular** – strukturált frontend a jól karbantartható UI fejlesztéshez  
+* **SQL Server** – megbízható relációs adattárolás  
+* **MongoDB (GridFS)** – hatékony bináris adatkezelés (képek)  
+* **Docker** – egyszerűsíti a környezet beállítását és biztosítja a konzisztenciát  
+* **Prometheus & Grafana** – produkciós szintű monitorozást és diagnosztikát tesz lehetővé  
 
 ---
 
-##  Author
+## További megjegyzések
 
-Developed by **Csabai Albert**
+Bár a projekt teljesíti az összes akadémiai követelményt, további funkciókat is tartalmaz (pl. monitorozás és konténerizáció), amelyek egy produkció-orientált fejlesztési megközelítést demonstrálnak.
+
+---
+
+## Szerző
+
+Készítette: **Csabai Albert**
