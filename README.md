@@ -156,7 +156,6 @@ These tools provide insight into:
 
 ### API Monitoring (Grafana)
 
-*(Add your screenshot here)*
 ![Grafana Dashboard](docs/images/grafana-dashboard.png)
 
 ---
