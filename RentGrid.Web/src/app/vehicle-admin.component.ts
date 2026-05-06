@@ -165,7 +165,7 @@ import { VehicleService, Vehicle, CreateVehicleRequest, UpdateVehiclePriceReques
     </div>
 
 <!-- Image Management Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1">
+<div class="modal fade" id="imageModal" tabindex="-1" data-bs-container="body">
   <div class="modal-dialog modal-lg">
     <div class="modal-content rounded-4 border-0">
       <div class="modal-header">
@@ -244,9 +244,14 @@ import { VehicleService, Vehicle, CreateVehicleRequest, UpdateVehiclePriceReques
       transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
     .card:hover {
-      transform: translateY(-2px);
+      
       box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
     }
+      :host {
+    display: block;
+    position: static !important;
+    transform: none !important;
+}
   `]
 })
 export class VehicleAdminComponent implements OnInit {
