@@ -1,5 +1,21 @@
 # RentGrid
 
+![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-Backend-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![Entity Framework](https://img.shields.io/badge/Entity%20Framework-ORM-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-Frontend-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-CC2927?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-GridFS-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-Visualization-F46800?style=for-the-badge&logo=grafana&logoColor=white)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Observability-000000?style=for-the-badge&logo=opentelemetry&logoColor=white)
+
 A **RentGrid** egy full-stack autókölcsönző menedzsment rendszer, amely egy MSc kurzusfeladat részeként készült.  
 Bemutatja egy teljes webalapú rendszer megtervezését és megvalósítását, beleértve a backend szolgáltatásokat, a frontend alkalmazást, az adatbázis-integrációt és a rendszer megfigyelhetőségét.
 
